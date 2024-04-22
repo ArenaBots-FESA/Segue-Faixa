@@ -1,4 +1,8 @@
 # Segue-Faixa
+Figura 0 - protótipo em desenvolvimento
+
+![prototipo](https://github.com/ArenaBots-FESA/Segue-Faixa/assets/73361982/01803381-db3e-4d3d-b95b-043e305bc340)
+
 Componentes utilizados: 2 motores N20 e 5 sensores QRE113GR da Robocore, 1 placa Arduino Nano.
 Com relação aos sensores, representados na Figura 1, eles possuem três terminais OUT (sinal da saída do sensor) GND (aterramento) e VCC (alimentação). Todos os sensores funcionaram, possuindo faixa de sinal de 0 até 1023. Cores brancas tiveram a leitura inferior que 100, enquanto cores pretas tiveram a leitura superior a 900. Os sensores possuem corrente de funcionamento de 50 mA e tensão de 5 V. 
 
@@ -15,4 +19,4 @@ Figura 2 - Motores 6V
 
 Fonte: Disponível em: <https://www.robocore.net/motor-motoredutor/micro-motor-com-caixa-de-reducao-6v-300rpm>, 2024.
 
-Os códigos utilizados para teste, se encontram na pasta “Teste de Componentes”.
+Os códigos utilizados para teste se encontram na pasta “Teste de Componentes”.
