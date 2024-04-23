@@ -1,0 +1,161 @@
+float Kp = 0; //set up the constants value
+float Ki = 0;
+float Kd = 0;
+int P;
+int I;
+int D;
+
+int ultimoerro = 0;
+bool ligado = false;
+
+const uint8_t maxspeeda = 150;
+const uint8_t maxspeedb = 150;
+const uint8_t basespeeda = 100;
+const uint8_t basespeedb = 100;
+
+//Set up the drive motor carrier pins
+int IN1 = 8;
+int IN2 = 9;
+int IN3 = 6;
+int IN4 = 5;
+int ENA = 3;
+int ENB = 3;
+
+
+//Set up the sensor pins
+
+int S1 = 10;
+int S2 = 10;
+int S3 = 10;
+int S4 = 10;
+int S5 = 10;
+
+//Set up the button pin
+int liga = 2;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(S1, INPUT);
+  pinMode(S2, INPUT);
+  pinMode(S3, INPUT);   
+  pinMode(S4, INPUT);
+  pinMode(S5, INPUT);
+
+  pinMode(calibracao, INPUT_PULLUP);
+  pinMode(liga, INPUT_PULLUP);
+
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  analogWrite(ENA, basespeeda);
+  analogWrite(ENB, basespeeda);
+
+  delay(500);
+  
+}
+
+void loop() {
+  if(digitalRead(liga) == LOW) {
+    ligado =! ligado;
+    if(ligado = true) {
+      delay(1000);//a delay when the robot starts
+    }
+    else {
+      delay(50);
+    }
+  }
+  if (ligado == true) {
+    PID_control();
+  }
+  else {
+    forward_brake(0,0);
+  }
+}
+void forward_brake(int posa, int posb) {
+  //set the appropriate values for aphase and bphase so that the robot goes straight
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, posa);
+  analogWrite(ENB, posb);
+}
+
+void PID_control() {
+
+  int erro;
+  
+  if ((digitalRead(S1) == 1) && (digitalRead(S2) == 0) && (digitalRead(S3) == 0) && (digitalRead(S4) == 0) && (digitalRead(S5) == 0))
+  {
+    erro = -4
+  }
+  
+  if ((digitalRead(S1) == 1) && (digitalRead(S2) == 1) && (digitalRead(S3) == 0) && (digitalRead(S4) == 0) && (digitalRead(S5) == 0))
+  {
+    erro = -3
+  }
+
+  if ((digitalRead(S1) == 0) && (digitalRead(S2) == 1) && (digitalRead(S3) == 0) && (digitalRead(S4) == 0) && (digitalRead(S5) == 0))
+  {
+    erro = -2
+  }
+
+  if ((digitalRead(S1) == 0) && (digitalRead(S2) == 1) && (digitalRead(S3) == 1) && (digitalRead(S4) == 0) && (digitalRead(S5) == 0))
+  {
+    erro = -1
+  }
+
+  if ((digitalRead(S1) == 0) && (digitalRead(S2) == 0) && (digitalRead(S3) == 1) && (digitalRead(S4) == 0) && (digitalRead(S5) == 0))
+  {
+    erro = 0
+  }
+
+  if ((digitalRead(S1) == 0) && (digitalRead(S2) == 0) && (digitalRead(S3) == 1) && (digitalRead(S4) == 1) && (digitalRead(S5) == 0))
+  {
+    erro = 1
+  }
+
+  if ((digitalRead(S1) == 0) && (digitalRead(S2) == 0) && (digitalRead(S3) == 0) && (digitalRead(S4) == 1) && (digitalRead(S5) == 0))
+  {
+    erro = 2
+  }
+
+  if ((digitalRead(S1) == 0) && (digitalRead(S2) == 0) && (digitalRead(S3) == 0) && (digitalRead(S4) == 1) && (digitalRead(S5) == 1))
+  {
+    erro = 3
+  }
+
+  if ((digitalRead(S1) == 1) && (digitalRead(S2) == 0) && (digitalRead(S3) == 0) && (digitalRead(S4) == 0) && (digitalRead(S5) == 1))
+  {
+    erro = 4
+  }
+
+  P = erro;
+  I = I + erro;
+  D = erro - ultimoerro;
+  ultimoerro = erro;
+  int motorspeed = P*Kp + I*Ki + D*Kd;
+  
+  int motorspeeda = basespeeda + motorspeed;
+  int motorspeedb = basespeedb - motorspeed;
+  
+  if (motorspeeda > maxspeeda) {
+    motorspeeda = maxspeeda;
+  }
+  
+  if (motorspeeda < 0) {
+    motorspeeda = 0;
+  }
+  if (motorspeedb < 0) {
+    motorspeedb = 0;
+  } 
+  //Serial.print(motorspeeda);Serial.print(" ");Serial.println(motorspeedb);
+  forward_brake(motorspeeda, motorspeedb);
+}
