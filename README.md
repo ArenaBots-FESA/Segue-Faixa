@@ -13,6 +13,7 @@ Figura 1 - Sensor QRE113 Robocore
 Fonte: Disponível em: <https://www.robocore.net/sensor-robo/sensor-de-linha-qre-analogico>, 2024.
 
 Já para os motores com caixa de redução, representados na Figura 2, tendo tensão de operação de 3 a 9 V, peso de 15 g, rotação de 1000 rpm, corrente de 1,6 A e Torque de 0,57 kgf*cm (aproximadamente 0,056 N*m) caso a tensão de operação seja de 6V, foi realizado o teste de giro deles com o uso da ponte H “L298N”
+
 Figura 2 - Motores 6V
 
 ![image](https://github.com/ArenaBots-FESA/Sumo-mini-auto/assets/73361982/69a5fb26-950c-43a9-b781-741f63c1cd66)
